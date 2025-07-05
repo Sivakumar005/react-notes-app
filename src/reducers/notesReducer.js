@@ -54,6 +54,12 @@ export const notesReducer=(state,{type,payload})=>{
                 ...state,
                 important:state.important.filter(({id})=>id!==payload.id)
             }
+        case "DELETE":
+            return{
+                ...state,
+                bin:[...state.bin,state.notes.find(({id})=>id===payload.id)],
+                notes:state.notes.filter(({id})=>id!==payload.id)
+            }
         default:
             return state
     }

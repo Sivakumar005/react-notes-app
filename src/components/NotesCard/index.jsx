@@ -2,11 +2,14 @@ import React, { useEffect } from "react"
 import { useNotes } from "../../context/notes-context"
 import { findNotesInArchive } from "../../utils/findNotesInArchive";
 import { findNotesInImportant } from "../../utils/findNotesInImportant";
+import { findNotesInBin } from "../../utils/findNotesInBin";
 export const NotesCard = ({ id, title, text, isPinned }) => {
-    const { notesDispatch, archive,important } = useNotes();
+    const { notesDispatch, archive, important, bin } = useNotes();
 
     const isNotesInArchive = findNotesInArchive(archive, id);
-    const isNotesInImportant=findNotesInImportant(important,id);
+    const isNotesInImportant = findNotesInImportant(important, id);
+    const isNotesInBin = findNotesInBin(bin, id);
+
 
     const onPinClick = (id) => {
         !isPinned ? notesDispatch({
@@ -37,10 +40,16 @@ export const NotesCard = ({ id, title, text, isPinned }) => {
                 payload: { id }
             })
     }
+    const onDeleteClick = (id) => {
+        notesDispatch({
+            type: "DELETE",
+            payload: { id }
+        })
+    }
 
-    useEffect(()=>{
-        console.log("important array",important);
-    },[important]);
+    useEffect(() => {
+        console.log("important array", important);
+    }, [important]);
 
     return (
         <div className="border-2 border-neutral-500 w-[300px] p-3 rounded-md" >
@@ -58,8 +67,8 @@ export const NotesCard = ({ id, title, text, isPinned }) => {
             <div className="flex flex-col">
                 <p>{text}</p>
                 <div className="ml-auto flex gap-3 ">
-                    <button onClick={()=>onImportantClick(id)}>
-                        <span className={isNotesInImportant?"material-icons":"material-icons-outlined"}>
+                    <button onClick={() => onImportantClick(id)}>
+                        <span className={isNotesInImportant ? "material-icons" : "material-icons-outlined"}>
                             star
                         </span>
                     </button>
@@ -68,12 +77,18 @@ export const NotesCard = ({ id, title, text, isPinned }) => {
                             archive
                         </span>
                     </button>
-                    <button>
-                        <span className="material-icons-outlined">
-                            delete
-                        </span>
-                        
+                    <button onClick={() => onDeleteClick(id)}>
+                        {isNotesInBin ? (
+                            <span className="material-symbols-outlined">
+                                backup
+                            </span>
+                        ) : (
+                            <span className="material-icons-outlined">
+                                delete
+                            </span>
+                        )}
                     </button>
+
                 </div>
             </div>
         </div>
