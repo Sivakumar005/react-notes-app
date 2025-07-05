@@ -1,10 +1,12 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useNotes } from "../../context/notes-context"
 import { findNotesInArchive } from "../../utils/findNotesInArchive";
+import { findNotesInImportant } from "../../utils/findNotesInImportant";
 export const NotesCard = ({ id, title, text, isPinned }) => {
-    const { notesDispatch, archive } = useNotes();
+    const { notesDispatch, archive,important } = useNotes();
 
     const isNotesInArchive = findNotesInArchive(archive, id);
+    const isNotesInImportant=findNotesInImportant(important,id);
 
     const onPinClick = (id) => {
         !isPinned ? notesDispatch({
@@ -25,8 +27,20 @@ export const NotesCard = ({ id, title, text, isPinned }) => {
                 payload: { id }
             })
     }
+    const onImportantClick = (id) => {
+        !isNotesInImportant ?
+            notesDispatch({
+                type: "ADD_TO_IMPORTANT",
+                payload: { id }
+            }) : notesDispatch({
+                type: "REMOVE_FROM_IMPORTANT",
+                payload: { id }
+            })
+    }
 
-
+    useEffect(()=>{
+        console.log("important array",important);
+    },[important]);
 
     return (
         <div className="border-2 border-neutral-500 w-[300px] p-3 rounded-md" >
@@ -44,6 +58,11 @@ export const NotesCard = ({ id, title, text, isPinned }) => {
             <div className="flex flex-col">
                 <p>{text}</p>
                 <div className="ml-auto flex gap-3 ">
+                    <button onClick={()=>onImportantClick(id)}>
+                        <span className={isNotesInImportant?"material-icons":"material-icons-outlined"}>
+                            star
+                        </span>
+                    </button>
                     <button onClick={() => onArchiveClick(id)}>
                         <span className={isNotesInArchive ? "material-icons" : "material-icons-outlined"}>
                             archive
@@ -53,6 +72,7 @@ export const NotesCard = ({ id, title, text, isPinned }) => {
                         <span className="material-icons-outlined">
                             delete
                         </span>
+                        
                     </button>
                 </div>
             </div>

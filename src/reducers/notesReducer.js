@@ -1,5 +1,4 @@
 import {v4 as uuid} from "uuid";
-import { Archive } from "../pages/Archive";
 export const notesReducer=(state,{type,payload})=>{
     switch(type){
         case "TITLE":
@@ -15,7 +14,7 @@ export const notesReducer=(state,{type,payload})=>{
         case "ADDNOTE":
             return{
                 ...state,
-                notes:[...state.notes,{text:state.text,title:state.title,id:uuid(),isPinned:false}]
+                notes:[...state.notes,{text:state.text,title:state.title,id:uuid(),isPinned:false,isImportant:false}]
             }
         case "CLEAR_NOTE":
             return{
@@ -44,6 +43,16 @@ export const notesReducer=(state,{type,payload})=>{
                 ...state,
                 notes:[...state.notes,state.archive.find(({id})=>id===payload.id)],
                 archive:state.archive.filter(({id})=>id!==payload.id)
+            }
+        case "ADD_TO_IMPORTANT":
+            return{
+                ...state,
+                important:[...state.important,state.notes.find(({id})=>id===payload.id)],
+            }
+        case "REMOVE_FROM_IMPORTANT":
+            return{
+                ...state,
+                important:state.important.filter(({id})=>id!==payload.id)
             }
         default:
             return state
