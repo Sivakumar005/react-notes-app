@@ -17,12 +17,17 @@ export const Bin = () => {
                             🗂️ Deleted Notes
                         </h3>
                     ) : (
-                        <p className="text-gray-500">Nothing in the bin.</p>
+                        <>
+                            <h3 className="text-2xl font-semibold text-gray-700 mb-6">
+                                🗂️ Deleted Notes
+                            </h3>
+                            <p className="text-gray-500">Nothing in the bin.</p>
+                        </>
                     )}
 
                     <div className="flex flex-wrap gap-6">
                         {Array.isArray(bin) &&
-                            bin.filter(note => note) // skip undefined/null entries
+                            bin?.filter(note => note)
                                 .map(({ text, title, id, isPinned }) => (
                                     <NotesCard
                                         key={id}

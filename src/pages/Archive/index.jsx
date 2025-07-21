@@ -20,15 +20,17 @@ export const Archive = () => {
                     )}
                     <div className="flex flex-wrap gap-6">
                         {
-                            archive?.length > 0 && archive.map(({ text, title, id, isPinned }) => (
-                                <NotesCard
-                                    key={id}
-                                    id={id}
-                                    title={title}
-                                    text={text}
-                                    isPinned={isPinned}
-                                />
-                            ))
+                            archive
+                                ?.filter(note => note && typeof note === 'object')
+                                .map(({ text, title, id, isPinned }) => (
+                                    <NotesCard
+                                        key={id}
+                                        id={id}
+                                        title={title}
+                                        text={text}
+                                        isPinned={isPinned}
+                                    />
+                                ))
                         }
                     </div>
                 </div>

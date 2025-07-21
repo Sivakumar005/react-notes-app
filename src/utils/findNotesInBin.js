@@ -1,3 +1,4 @@
 export const findNotesInBin = (bin, id) => {
-    return bin.some(note => note.id === id);
-}
+    if (!Array.isArray(bin) || !id) return false;
+    return bin.some(note => note?.id === id);
+};
