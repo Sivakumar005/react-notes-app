@@ -13,10 +13,17 @@ export const Archive = () => {
                 <Sidebar />
 
                 <div className="flex-1">
-                    {archive.length > 0 && (
+                    {archive?.length > 0 ?(
                         <h3 className="text-2xl font-semibold text-gray-700 mb-6">
                             🗂️ Archived Notes
                         </h3>
+                    ):(
+                        <>
+                        <h3 className="text-2xl font-semibold text-gray-700 mb-6">
+                                🗂️ Archived Notes
+                            </h3>
+                            <p className="text-gray-500">Nothing in the Archive page.</p>
+                        </>
                     )}
                     <div className="flex flex-wrap gap-6">
                         {

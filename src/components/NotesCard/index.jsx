@@ -21,14 +21,13 @@ export const NotesCard = ({ id, title, text, isPinned }) => {
         })
     }
     const onArchiveClick = (id) => {
-        !isNotesInArchive ?
-            notesDispatch({
-                type: "ADD_TO_ARCHIVE",
-                payload: { id }
-            }) : notesDispatch({
-                type: "REMOVE_FROM_ARCHIVE",
-                payload: { id }
-            })
+        !isNotesInArchive ? notesDispatch({
+            type: 'ADD_TO_ARCHIVE',
+            payload: { id }
+        }) : notesDispatch({
+            type: 'REMOVE_FROM_ARCHIVE',
+            payload: { id }
+        })
     }
     const onImportantClick = (id) => {
         !isNotesInImportant ?
@@ -41,15 +40,20 @@ export const NotesCard = ({ id, title, text, isPinned }) => {
             })
     }
     const onDeleteClick = (id) => {
-        notesDispatch({
-            type: "DELETE",
-            payload: { id }
-        })
+        !isNotesInBin ?
+            notesDispatch({
+                type: "DELETE",
+                payload: { id }
+            }) : notesDispatch({
+                type: "BACKUP",
+                payload: { id }
+            })
     }
 
     useEffect(() => {
-        console.log("important array", important);
-    }, [important]);
+        // console.log("important array", important);
+        console.log("archive array", archive);
+    }, [archive]);
 
     return (
         <div className="border-2 border-neutral-500 w-[300px] p-3 rounded-md" >
@@ -68,14 +72,25 @@ export const NotesCard = ({ id, title, text, isPinned }) => {
                 <p>{text}</p>
                 <div className="ml-auto flex gap-3 ">
                     <button onClick={() => onImportantClick(id)}>
-                        <span className={isNotesInImportant ? "material-icons" : "material-icons-outlined"}>
-                            star
-                        </span>
+                        {isNotesInImportant ? (
+                            <span className="material-icons">
+                                star
+                            </span>
+                        ) : (
+                            <span className="material-symbols-outlined">
+                                star
+                            </span>)}
                     </button>
                     <button onClick={() => onArchiveClick(id)}>
-                        <span className={isNotesInArchive ? "material-icons" : "material-icons-outlined"}>
-                            archive
-                        </span>
+                        {isNotesInArchive ? (
+                            <span className="material-symbols-outlined">
+                                unarchive
+                            </span>
+                        ) : (
+                            <span className="material-icons-outlined">
+                                archive
+                            </span>
+                        )}
                     </button>
                     <button onClick={() => onDeleteClick(id)}>
                         {isNotesInBin ? (
